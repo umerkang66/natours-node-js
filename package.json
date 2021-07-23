@@ -4,7 +4,7 @@
   "description": "Learning node.js, express, and mongoDb",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "author": "umer kang",
@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mongoose": "^5.13.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
@@ -24,5 +25,8 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "prettier": "^2.3.2"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }
