@@ -8,6 +8,8 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
+      maxLength: [40, "Tour name shouldn't have more than 40 characters"],
+      minLength: [10, "Tour name shouldn't have less than 10 characters"],
     },
     slug: String,
     duration: {
@@ -21,10 +23,16 @@ const tourSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, 'A tour must have a difficulty property'],
+      enum: {
+        values: ['easy', 'medium', 'difficult'],
+        message: 'Tour difficulty is either be easy, medium, or hard',
+      },
     },
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      max: [5, "Tour rating shouldn't be more than 5"],
+      min: [1, "Tour rating shouldn't be less than 1"],
     },
     ratingsQuantity: {
       type: Number,
@@ -34,7 +42,16 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a name'],
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        // this only points to the current doc on NEW document creation
+        validator: function (value) {
+          return value < this.price;
+        },
+        message: 'The discount price ({VALUE}) should be less than price',
+      },
+    },
     summary: {
       type: String,
       trim: true,
@@ -82,7 +99,7 @@ tourSchema.pre('save', function (next) {
   next();
 });
 
-tourSchema.post('save', (document, next) => {
+tourSchema.post('save', function (document, next) {
   console.log(document);
   next();
 });
@@ -100,6 +117,13 @@ tourSchema.post(/^find/, function (docs, next) {
   next();
 });
 
+// AGGREGATION MIDDLEWARES: They run before and after aggregation pipeline
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  next();
+});
+
+// CREATING A MODEL FROM TOUR SCHEMA
 const Tour = mongoose.model('Tour', tourSchema);
 
 module.exports = Tour;

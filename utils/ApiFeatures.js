@@ -22,9 +22,8 @@ class ApiFeatures {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
       this.query = this.query.sort(sortBy);
-    } else {
-      this.query = this.query.sort('-createdAt');
-    }
+    } else this.query = this.query.sort('-createdAt');
+    // Here - means to sort in opposite side
 
     return this;
   }
@@ -33,9 +32,8 @@ class ApiFeatures {
     if (this.queryString.fields) {
       const fields = this.queryString.fields.split(',').join(' ');
       this.query = this.query.select(fields);
-    } else {
-      this.query = this.query.select('-__v');
-    }
+    } else this.query = this.query.select('-__v');
+    // Here - means removing the from query in select method
 
     return this;
   }
