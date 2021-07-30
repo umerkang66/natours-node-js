@@ -29,6 +29,12 @@ const handleValidationErrorDB = err => {
   return new AppError(message, 400);
 };
 
+const handleJWTError = () =>
+  new AppError('Invalid token! Please log in again.', 401);
+
+const handleJWTExpiredError = () =>
+  new AppError('Token is expired! Please log in again.', 401);
+
 const sendErrorProd = (err, res) => {
   // Operational, trusted error: send message to the client
   if (err.isOperational) {
@@ -63,6 +69,9 @@ const globalErrorController = (err, req, res, next) => {
     if (err.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (err.name === 'ValidationError') error = handleValidationErrorDB(error);
+    // We dont need a function argument for this simple error
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
     sendErrorProd(error, res);
   }

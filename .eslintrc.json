@@ -5,6 +5,7 @@
     "prettier/prettier": "off",
     "spaced-comment": "off",
     "no-console": "off", // warn
+    "arrow-body-style": "off",
     "consistent-return": "off",
     "func-names": "off",
     "object-shorthand": "off",
