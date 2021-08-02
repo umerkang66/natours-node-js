@@ -2,6 +2,7 @@ const Tour = require('../models/tourModel');
 const ApiFeatures = require('../utils/ApiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
+const factory = require('./handleFactory');
 
 //  MIDDLEWARES
 exports.aliasTopTours = (req, res, next) => {
@@ -34,7 +35,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 
 // Get a single tour by id
 exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id);
+  const tour = await Tour.findById(req.params.id).populate('reviews');
 
   if (!tour) return next(new AppError('Requested tour does not found', 404));
 
@@ -70,16 +71,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 });
 
 // Delete the tour
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id);
-
-  if (!tour) return next(new AppError('Cannot delete the tour', 404));
-
-  res.status(204).json({
-    status: 'deleted successfully',
-    data: null,
-  });
-});
+exports.deleteTour = factory.deleteOne(Tour);
 
 // Get all the tour stats
 exports.getTourStats = catchAsync(async (req, res, next) => {

@@ -42,6 +42,11 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -59,6 +64,12 @@ userSchema.pre('save', async function (next) {
 
   // Saving to the database is a slower process, so sometimes passwordChangeAt property is saved to the database after the JWT has sent to the client, so user cannot log in and use protected routes because it will appear that the user is again changed the password so we have to remove the 1 second from the passwordChangeAt property
   this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
+userSchema.pre(/^find/, async function (next) {
+  // this points to current query
+  this.find({ active: { $ne: false } });
   next();
 });
 
