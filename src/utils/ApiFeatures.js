@@ -9,7 +9,7 @@ class ApiFeatures {
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach(field => delete queryObj[field]);
 
-    // ADVANCED FILTERING
+    // Advance filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, match => `$${match}`);
 
