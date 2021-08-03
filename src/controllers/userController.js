@@ -14,21 +14,21 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 // ROUTE HANDLERS
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: { users },
-  });
-});
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Send an error if user tries to update the password
-  if (req.body.password || req.body.passwordConfirm)
-    return next(new AppError('This route is not for password update', 400));
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(
+      new AppError(
+        'This route is not for password update. Please use the /updatePassword route',
+        400
+      )
+    );
+  }
 
   // 2) Filtered out unwanted field names that are not allowed
   const filteredBody = filterObj(req.body, 'name', 'email');
@@ -39,7 +39,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
 
-  res.status(200).json({ status: 'success', user: updatedUser });
+  res.status(200).json({
+    status: 'success',
+    user: updatedUser,
+  });
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
@@ -47,25 +50,16 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({ status: 'success', data: null });
 });
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined',
-  });
-};
-
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'This route is not yet defined',
+    message: 'This route is not defined, Please use /signup for that',
   });
 };
 
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined',
-  });
-};
+exports.getAllUsers = factory.getAll(User);
+exports.getUser = factory.getOne(User);
 
+// Do not update password with this
+exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);

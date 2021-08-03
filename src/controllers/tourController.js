@@ -1,7 +1,5 @@
 const Tour = require('../models/tourModel');
-const ApiFeatures = require('../utils/ApiFeatures');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/AppError');
 const factory = require('./handleFactory');
 
 //  MIDDLEWARES
@@ -13,64 +11,10 @@ exports.aliasTopTours = (req, res, next) => {
 };
 
 // ROUTE HANDLERS
-// Get all tours
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // BUILD THE QUERY AND ADDING API FEATURES
-  const apiFeatures = new ApiFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-
-  // EXECUTE THE QUERY
-  const tours = await apiFeatures.query;
-
-  // SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: { tours },
-  });
-});
-
-// Get a single tour by id
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-
-  if (!tour) return next(new AppError('Requested tour does not found', 404));
-
-  res.status(200).json({
-    status: 'success',
-    data: { tour },
-  });
-});
-
-// Create a tour by getting data from user
-exports.createTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.create(req.body);
-
-  res.status(201).json({
-    status: 'success',
-    data: { tour },
-  });
-});
-
-// Update the previously created tour
-exports.updateTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-
-  if (!tour) return next(new AppError('Cannot update the tour', 404));
-
-  res.status(200).json({
-    status: 'success',
-    data: { tour },
-  });
-});
-
-// Delete the tour
+exports.getAllTours = factory.getAll(Tour);
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+exports.createTour = factory.createOne(Tour);
+exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour);
 
 // Get all the tour stats
