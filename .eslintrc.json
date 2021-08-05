@@ -4,8 +4,9 @@
   "rules": {
     "prettier/prettier": "off",
     "spaced-comment": "off",
-    "no-console": "off", // warn
+    "no-console": "warn", // warn
     "arrow-body-style": "off",
+    "no-restricted-imports": "off",
     "consistent-return": "off",
     "func-names": "off",
     "object-shorthand": "off",
@@ -16,5 +17,9 @@
     "class-methods-use-this": "off",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }]
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
   }
 }

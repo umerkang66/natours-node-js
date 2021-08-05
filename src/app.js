@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/AppError');
 const globalErrorController = require('./controllers/errorController');
@@ -13,6 +14,7 @@ const globalErrorController = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
@@ -20,7 +22,6 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // Serving static html files
-// app.use(express.static(`${__dirname}/../public`));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // GLOBAL MIDDLEWARES
@@ -40,6 +41,7 @@ app.use('/api', limiter);
 
 // Body parser, reading the data from the body in req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
 
 // Data sanitization against noSQL query injection
 app.use(mongoSanitize());
@@ -47,34 +49,20 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // Prevent duplicate query string, it will use the last one
-app.use(
-  hpp({
-    whitelist: [
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize',
-      'difficulty',
-      'price',
-    ],
-  })
-);
+// prettier-ignore
+const whiteListArr = ['duration', 'ratingsQuantity', 'ratingsAverage', 'maxGroupSize', 'difficulty', 'price'];
+app.use(hpp({ whitelist: whiteListArr }));
 
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  // console.log(req.headers);
+  // console.log(req.cookies);
   next();
 });
 
 // ROUTES
 // Website Routes
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    tour: 'The Northern Lights',
-    user: 'Jonas',
-  });
-});
+app.use('/', viewRouter);
 
 // Api Routes
 app.use('/api/v1/tours', tourRouter);
