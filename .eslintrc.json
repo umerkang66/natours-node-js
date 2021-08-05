@@ -4,7 +4,7 @@
   "rules": {
     "prettier/prettier": "off",
     "spaced-comment": "off",
-    "no-console": "warn", // warn
+    "no-console": "off", // warn
     "arrow-body-style": "off",
     "no-restricted-imports": "off",
     "consistent-return": "off",

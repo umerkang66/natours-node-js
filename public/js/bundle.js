@@ -2850,19 +2850,83 @@ var displayMap = function displayMap(locations) {
 };
 
 exports.displayMap = displayMap;
-},{}],"index.js":[function(require,module,exports) {
+},{}],"updateSettings.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.updateSettings = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _alerts = require("./alerts");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+// Type of data is either 'data' or 'password'
+var updateSettings = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(data, type) {
+    var urlType, url, res;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            urlType = type === 'password' ? 'updateMyPassword' : 'updateMe';
+            url = "http://localhost:3000/api/v1/users/".concat(urlType);
+            _context.next = 5;
+            return _axios.default.patch(url, data);
+
+          case 5:
+            res = _context.sent;
+            if (res.data.status === 'success') (0, _alerts.showAlert)('success', "".concat(type.toUpperCase(), " has been updated"));
+            _context.next = 12;
+            break;
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](0);
+            (0, _alerts.showAlert)('error', _context.t0.response.data.message);
+
+          case 12:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 9]]);
+  }));
+
+  return function updateSettings(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.updateSettings = updateSettings;
+},{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _login = require("./login");
 
 var _mapbox = require("./mapbox");
 
+var _updateSettings = require("./updateSettings");
+
 require("regenerator-runtime/runtime");
 
-/* eslint-disable */
-var loginForm = document.querySelector('.form');
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var loginForm = document.querySelector('.form--login');
 var mapBox = document.getElementById('map');
 var logOutBtn = document.querySelector('.nav__el--logout');
+var updateDataForm = document.querySelector('.form-user-data');
+var updatePasswordForm = document.querySelector('.form-user-password');
 
 if (loginForm) {
   loginForm.addEventListener('submit', function (e) {
@@ -2878,8 +2942,95 @@ if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
   (0, _mapbox.displayMap)(locations);
+} // Updating the name, and email
+
+
+if (updateDataForm) {
+  updateDataForm.addEventListener('submit', /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+      var btnSaveData, name, email;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              e.preventDefault();
+              btnSaveData = document.querySelector('.btn--save-user-data');
+              btnSaveData.innerHTML = 'updating...';
+              btnSaveData.style.opacity = 0.9;
+              name = document.getElementById('name').value;
+              email = document.getElementById('email').value;
+              _context.next = 8;
+              return (0, _updateSettings.updateSettings)({
+                name: name,
+                email: email
+              }, 'data');
+
+            case 8:
+              btnSaveData.innerHTML = 'Save Settings'.toUpperCase();
+              btnSaveData.style.opacity = 1;
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+} // Updating the password
+
+
+if (updatePasswordForm) {
+  updatePasswordForm.addEventListener('submit', /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
+      var btnSavePassword, passwordCurrentInput, passwordInput, passwordConfirmInput, passwordCurrent, password, passwordConfirm, passwordPackage;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              e.preventDefault();
+              btnSavePassword = document.querySelector('.btn--save-password');
+              btnSavePassword.innerHTML = 'updating...';
+              btnSavePassword.style.opacity = 0.9;
+              passwordCurrentInput = document.getElementById('password-current');
+              passwordInput = document.getElementById('password');
+              passwordConfirmInput = document.getElementById('password-confirm');
+              passwordCurrent = passwordCurrentInput.value;
+              password = passwordInput.value;
+              passwordConfirm = passwordConfirmInput.value;
+              passwordPackage = {
+                passwordCurrent: passwordCurrent,
+                password: password,
+                passwordConfirm: passwordConfirm
+              };
+              _context2.next = 13;
+              return (0, _updateSettings.updateSettings)(passwordPackage, 'password');
+
+            case 13:
+              btnSavePassword.innerHTML = 'Save Password'.toUpperCase();
+              btnSavePassword.style.opacity = 1;
+              passwordCurrentInput.value = '';
+              passwordInput.value = '';
+              passwordConfirmInput.value = '';
+
+            case 18:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function (_x2) {
+      return _ref2.apply(this, arguments);
+    };
+  }());
 }
-},{"./login":"login.js","./mapbox":"mapbox.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./login":"login.js","./mapbox":"mapbox.js","./updateSettings":"updateSettings.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2907,7 +3058,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63322" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64901" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
