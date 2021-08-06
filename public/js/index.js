@@ -36,9 +36,12 @@ if (updateDataForm) {
     btnSaveData.innerHTML = 'updating...';
     btnSaveData.style.opacity = 0.9;
 
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    await updateSettings({ name, email }, 'data');
+    const formData = new FormData();
+    formData.append('name', document.getElementById('name').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('photo', document.getElementById('photo').files[0]);
+
+    await updateSettings(formData, 'data');
 
     btnSaveData.innerHTML = 'Save Settings'.toUpperCase();
     btnSaveData.style.opacity = 1;

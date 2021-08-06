@@ -2948,7 +2948,7 @@ if (mapBox) {
 if (updateDataForm) {
   updateDataForm.addEventListener('submit', /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-      var btnSaveData, name, email;
+      var btnSaveData, formData;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -2957,19 +2957,18 @@ if (updateDataForm) {
               btnSaveData = document.querySelector('.btn--save-user-data');
               btnSaveData.innerHTML = 'updating...';
               btnSaveData.style.opacity = 0.9;
-              name = document.getElementById('name').value;
-              email = document.getElementById('email').value;
-              _context.next = 8;
-              return (0, _updateSettings.updateSettings)({
-                name: name,
-                email: email
-              }, 'data');
+              formData = new FormData();
+              formData.append('name', document.getElementById('name').value);
+              formData.append('email', document.getElementById('email').value);
+              formData.append('photo', document.getElementById('photo').files[0]);
+              _context.next = 10;
+              return (0, _updateSettings.updateSettings)(formData, 'data');
 
-            case 8:
+            case 10:
               btnSaveData.innerHTML = 'Save Settings'.toUpperCase();
               btnSaveData.style.opacity = 1;
 
-            case 10:
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -3058,7 +3057,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64901" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52627" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
