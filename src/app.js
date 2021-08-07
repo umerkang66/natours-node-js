@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/AppError');
 const globalErrorController = require('./controllers/errorController');
@@ -27,6 +28,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // GLOBAL MIDDLEWARES
+// Adding cors so that other people can also access our api
+app.use(cors());
+// if we only allow one single url
+// app.use(
+//   cors({
+//     origin: 'https://www.natours.com',
+//   })
+// );
+
+// For the all the other resources like put, patch and delete
+app.options('*', cors());
+
 // Set security http headers
 app.use(helmet());
 
@@ -56,6 +69,7 @@ app.use(xss());
 const whiteListArr = ['duration', 'ratingsQuantity', 'ratingsAverage', 'maxGroupSize', 'difficulty', 'price'];
 app.use(hpp({ whitelist: whiteListArr }));
 
+// Compressing the request using gzip
 app.use(compression());
 
 // Test middleware
