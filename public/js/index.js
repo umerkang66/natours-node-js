@@ -4,6 +4,7 @@ import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import 'regenerator-runtime/runtime';
 
+// DOM elements
 const loginForm = document.querySelector('.form--login');
 const mapBox = document.getElementById('map');
 const logOutBtn = document.querySelector('.nav__el--logout');
