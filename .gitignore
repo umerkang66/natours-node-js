@@ -1,7 +1,3 @@
 node_modules/
-dist/
-build/
-config.env
-.parcel-cache
-.cache
 *.env
+config.env
