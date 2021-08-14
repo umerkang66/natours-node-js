@@ -130,6 +130,7 @@ tourSchema.virtual('reviews', {
 });
 
 // DOCUMENT MIDDLEWARES: It runs before the .save() and .create()
+// In save methods we get document as this object
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -142,6 +143,7 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
+// In find pre methods we get the query as this object
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',

@@ -46,6 +46,7 @@ reviewSchema.pre(/^find/, function (next) {
   next();
 });
 
+// This will add a method on the constructor of Model itself, in other words static method
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
   const stats = await this.aggregate([
     {
