@@ -1,84 +1,71 @@
 /* eslint-disable */
-import { login, logout } from './login';
+import '@babel/polyfill';
 import { displayMap } from './mapbox';
+import { login, logout } from './login';
 import { updateSettings } from './updateSettings';
-import 'regenerator-runtime/runtime';
+import { bookTour } from './stripe';
+import { showAlert } from './alerts';
 
-// DOM elements
-const loginForm = document.querySelector('.form--login');
+// DOM ELEMENTS
 const mapBox = document.getElementById('map');
+const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
-const updateDataForm = document.querySelector('.form-user-data');
-const updatePasswordForm = document.querySelector('.form-user-password');
+const userDataForm = document.querySelector('.form-user-data');
+const userPasswordForm = document.querySelector('.form-user-password');
+const bookBtn = document.getElementById('book-tour');
 
-if (loginForm) {
-  loginForm.addEventListener('submit', e => {
-    e.preventDefault();
-
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    login(email, password);
-  });
-}
-
-if (logOutBtn) logOutBtn.addEventListener('click', logout);
-
+// DELEGATION
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
   displayMap(locations);
 }
 
-// Updating the name, and email
-if (updateDataForm) {
-  updateDataForm.addEventListener('submit', async e => {
+if (loginForm)
+  loginForm.addEventListener('submit', e => {
     e.preventDefault();
-
-    const btnSaveData = document.querySelector('.btn--save-user-data');
-    btnSaveData.innerHTML = 'updating...';
-    btnSaveData.style.opacity = 0.9;
-
-    const formData = new FormData();
-    formData.append('name', document.getElementById('name').value);
-    formData.append('email', document.getElementById('email').value);
-    formData.append('photo', document.getElementById('photo').files[0]);
-
-    await updateSettings(formData, 'data');
-
-    btnSaveData.innerHTML = 'Save Settings'.toUpperCase();
-    btnSaveData.style.opacity = 1;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    login(email, password);
   });
-}
 
-// Updating the password
-if (updatePasswordForm) {
-  updatePasswordForm.addEventListener('submit', async e => {
+if (logOutBtn) logOutBtn.addEventListener('click', logout);
+
+if (userDataForm)
+  userDataForm.addEventListener('submit', e => {
     e.preventDefault();
+    const form = new FormData();
+    form.append('name', document.getElementById('name').value);
+    form.append('email', document.getElementById('email').value);
+    form.append('photo', document.getElementById('photo').files[0]);
 
-    const btnSavePassword = document.querySelector('.btn--save-password');
-    btnSavePassword.innerHTML = 'updating...';
-    btnSavePassword.style.opacity = 0.9;
-
-    const passwordCurrentInput = document.getElementById('password-current');
-    const passwordInput = document.getElementById('password');
-    const passwordConfirmInput = document.getElementById('password-confirm');
-
-    const passwordCurrent = passwordCurrentInput.value;
-    const password = passwordInput.value;
-    const passwordConfirm = passwordConfirmInput.value;
-
-    const passwordPackage = {
-      passwordCurrent,
-      password,
-      passwordConfirm,
-    };
-
-    await updateSettings(passwordPackage, 'password');
-
-    btnSavePassword.innerHTML = 'Save Password'.toUpperCase();
-    btnSavePassword.style.opacity = 1;
-
-    passwordCurrentInput.value = '';
-    passwordInput.value = '';
-    passwordConfirmInput.value = '';
+    updateSettings(form, 'data');
   });
-}
+
+if (userPasswordForm)
+  userPasswordForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    await updateSettings(
+      { passwordCurrent, password, passwordConfirm },
+      'password'
+    );
+
+    document.querySelector('.btn--save-password').textContent = 'Save password';
+    document.getElementById('password-current').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('password-confirm').value = '';
+  });
+
+if (bookBtn)
+  bookBtn.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
+  });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);
