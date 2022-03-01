@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // Importing the utils
 const AppError = require('./utils/appError');
@@ -75,6 +76,9 @@ app.use(
     ],
   })
 );
+
+// It will compresses all the responses (only text, and json)
+app.use(compression());
 
 if (process.env.NODE_ENV === 'development') {
   // Only use morgan if we are in development mode

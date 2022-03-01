@@ -50,8 +50,6 @@ if (updateSettingsForm) {
     form.append('email', document.getElementById('email-update').value);
     form.append('photo', document.getElementById('photo').files[0]);
 
-    console.log(form);
-
     const buttonEl = document.querySelector('.btn--save-settings');
     buttonEl.textContent = 'Processing...';
     buttonEl.style.opacity = 0.7;

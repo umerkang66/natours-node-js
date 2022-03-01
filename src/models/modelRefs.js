@@ -27,3 +27,5 @@ tourSchema.post('save', function (doc, next) {
   // "this" and "doc" will point to the same document that has been saved ("this" === "doc")
   next();
 });
+
+// These console.logs don't matter, because we are not using the functions anywhere

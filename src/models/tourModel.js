@@ -236,7 +236,10 @@ tourSchema.pre(/^find/, function (next) {
   // Here "this" is query
   // Same as {secretTour: false}
   this.find({ secretTour: { $ne: true } });
-  this.start = Date.now();
+
+  if (process.env.NODE_ENV !== 'production') {
+    this.start = Date.now();
+  }
 
   next();
 });
@@ -271,7 +274,9 @@ tourSchema.pre('findOne', function (next) {
 tourSchema.post(/^find/, function (docs, next) {
   // Docs are all the documents that are returned from the query
   // Here "this" is query
-  console.log(`Query took ${Date.now() - this.start} milliseconds`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`Query took ${Date.now() - this.start} milliseconds`);
+  }
 
   next();
 });
