@@ -71,7 +71,8 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
 
   // Move the next middleware, but IMPORTANT! remove the query string from the url
   // So redirect to the main page
-  res.redirect(req.originalUrl.split('?')[0]);
+  // res.redirect(req.originalUrl.split('?')[0]);
+  res.redirect('/');
 });
 
 exports.createBooking = factory.createOne(Booking);
