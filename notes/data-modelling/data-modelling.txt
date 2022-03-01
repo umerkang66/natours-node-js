@@ -1,0 +1,35 @@
+CONSIDER 4 STEPS WHEN MODELING THE DATA
+
+    1) Different types of relationship between data
+    2) Referencing/Normalization OR Embedding/DeNormalization
+    3) Types of Referencing
+
+TYPES OF RELATIONSHIP THAT CAN EXIST BETWEEN DATA, THERE ARE 3 BIG TYPES OF RELATIONSHIPS
+
+1) 1:1
+2) 1:MANY
+2) MANY:MANY
+
+    1:1 Means that one field can only have 1 value e.g. 1 movie can only have 1 name
+
+    1:MANY are the most important there are further 3 types of 1:MANY 
+    a) 1:FEW --> 1 Movie can have few awards  
+    b) 1: MANY --> 1 Movie can have thousands of reviews (!TON)  
+    c) 1: TON --> Just like logging functionality on every request (can easily grow to millions to document)
+
+    MANY:MANY where one movie can have many actors, and one actor can play into many movies (relationship can goes to both direction)
+
+REFERENCING (NORMALIZE) AND EMBEDDING (DE_NORMALIZE)
+
+    In the REFERENCE form, we keep the two related data sets separated (just like in relational DB's), Both movie, and actors should have their separate documents in the DB, then we can relate them using _id (create references on movie document about its actors). DISADVANTAGE: When we need both actors, and movies together, we have to send multiple requests to the server (query for the movie, and the actor)
+
+    In the EMBEDDING form, we can embed the document (actors) right its parent document (movie), this is bad if we want to update the embedded document, and we can also don't query that data
+
+HOW TO DECIDE ABOUT NORMALIZING OR DE_NORMALIZING
+
+    To Take the decisions we need to combine all of the three together
+    1) RELATIONSHIP TYPE: How 2 datasets are related to each other
+    2) DATA ACCESS PATTERNS: How often data is read and written, Read/Write ratio if the data is more read or more written
+    3) DATA CLOSENESS: How we want to query the data from the DB
+
+OTHER IS IN THE DATA MODELLING SLIDES IN THE DATA MODELLING FOLDER

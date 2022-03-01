@@ -1,8 +1,10 @@
 /* eslint-disable */
+
 import axios from 'axios';
 import { showAlert } from './alerts';
 
-// type is either 'password' or 'data'
+// "options will be the data to updated"
+// "type" will to update "data" or "password"
 export const updateSettings = async (data, type) => {
   try {
     const url =
@@ -13,7 +15,7 @@ export const updateSettings = async (data, type) => {
     const res = await axios({
       method: 'PATCH',
       url,
-      data
+      data,
     });
 
     if (res.data.status === 'success') {

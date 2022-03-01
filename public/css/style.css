@@ -2,6 +2,25 @@
   --section-rotate: 9vw;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #55c57a;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3f915a;
+}
+
 ::-moz-selection {
   background-color: #55c57a;
   color: #fff;
@@ -32,7 +51,7 @@ body {
   font-weight: 300;
   font-family: 'Lato', sans-serif;
   color: #777;
-  padding: 3rem;
+  padding: 0rem;
   min-height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -41,6 +60,7 @@ body {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 .main {
@@ -830,7 +850,6 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  justify-content: flex-end;
 }
 .footer__nav li {
   margin-left: 1.5rem;

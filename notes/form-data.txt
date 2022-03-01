@@ -1,0 +1,3 @@
+FORM_DATA: We use it to send files (like images, pdf files from the client to the server)
+
+If we sent files from form_data the all the other things except the files (like fields to be updated other than files) are put on the req.body, but files are put on the req.file or req.files (if there are multiple)

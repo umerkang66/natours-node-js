@@ -1,0 +1,27 @@
+//- This whole file we will be extending from the other pug files
+doctype html
+html
+  head
+    //- We have created the block that we will be appended from other files
+    block head
+      meta(charset='UTF-8')
+      meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      link(rel='stylesheet' href='/css/style.css')
+      link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
+      link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+      title Natours | #{title}
+      script(src="https://js.stripe.com/v3") 
+
+  body
+    // HEADER
+    include _header
+
+    // CONTENT
+    block content
+      h1 This is a placeholder heading
+
+    // FOOTER
+    include _footer
+
+    //- Add all the js bundle
+    script(src="/js/bundle.js") 

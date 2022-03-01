@@ -1,38 +1,49 @@
 /* eslint-disable */
-import axios from 'axios';
+
 import { showAlert } from './alerts';
 
 export const login = async (email, password) => {
   try {
-    const res = await axios({
+    const res = await fetch('/api/v1/users/login', {
       method: 'POST',
-      url: '/api/v1/users/login',
-      data: {
-        email,
-        password
-      }
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
     });
 
-    if (res.data.status === 'success') {
-      showAlert('success', 'Logged in successfully!');
-      window.setTimeout(() => {
-        location.assign('/');
-      }, 1500);
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Cannot log in');
     }
+
+    showAlert('success', 'Logged in successfully');
+
+    window.setTimeout(() => {
+      // Redirecting the homepage
+      location.assign('/');
+    }, 1500);
   } catch (err) {
-    showAlert('error', err.response.data.message);
+    showAlert('error', err.message);
   }
 };
 
 export const logout = async () => {
+  // This try catch is for if there is no internet connection, or server is down
   try {
-    const res = await axios({
-      method: 'GET',
-      url: '/api/v1/users/logout'
-    });
-    if ((res.data.status = 'success')) location.reload(true);
+    const res = await fetch('/api/v1/users/logout');
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error('Error logging out');
+    }
+
+    // Reload the page, by setting it to "true", this will be a forced reload from the server, not from the browser cache
+    location.reload(true);
+
+    // Reload the page
   } catch (err) {
-    console.log(err.response);
-    showAlert('error', 'Error logging out! Try again.');
+    showAlert('error', err.message || 'Error logging out');
   }
 };

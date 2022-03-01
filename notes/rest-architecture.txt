@@ -1,0 +1,7 @@
+Rest Apis should follow this architecture
+
+1) Separate api into logical resources
+2) Expose structured resource-based urls
+3) Use http methods (verbs)
+4) Send data as JSON
+5) Be stateless

@@ -1,0 +1,31 @@
+1) When user send a POST request with {email, and password} as req.body, the server is going to check if the user exist, and the password is correct
+
+2) If the user exist, and the password is correct, server is going to generate a string (using a secret: that is only known to developer), then send it back to the client.
+
+3) On the client, that jwt string, is going to be stored either in a cookie, or localStorage
+
+4) Server doesn't know which user is logged in, because it doesn't store the state (stateless apis), but user (client) knows that he is logged in (because he has the jwt string)
+
+5) When a user want to access a protected route, he sends his jwt along with the request, then our app will verify that jwt is actually valid (if it is, it allows the user the protected route)
+
+6) All this communication must happens over https (!http)
+
+//////////////////////////////
+//////////////////////////////
+
+THE JSON WEB TOKENS ARE MADE UP OF 3 PARTS: 
+1) THE HEADER: Just a metadata about the token
+
+2) THE PAYLOAD: The data that we can encode into the token, The more the data, the bigger the jwt will be
+
+IMP! The Header and the payload will be encoded in the jwt (!encrypted)
+
+3) THE SIGNATURE: This is created using the header and the payload and the secret that is saved on the server (whole process also called the SIGNING THE JWT)
+
+SIGNING ALGORITHM: It takes the header, payload and the secret to create a unique signature, thus jwt is formed (that is sent to the client)
+
+VERIFYING THE JWT: It will verify that no one have changed the header, and the payload data of the jwt. Once the jwt is received in the server, server will create the TEST SIGNATURE using header, payload, and secret. And the original SIGNATURE is still in the token. Now all we have to do is to compare the TEST SIGNATURE and the ORIGINAL SIGNATURE
+
+If a fake user is sent a jwt, they will not be able to create the same jwt, because they will not have the secret, that the developer has (because the secret is stored in the backend). Hence they cannot create the right jwt (it is actually signature)
+
+They will fail because if they change the header, or payload, the test signature will automatically changed. If someone else sent the jwt, they will not have the secret.
