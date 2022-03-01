@@ -34,6 +34,7 @@ const DB = process.env.DATABASE.replace(
 mongoose.connect(DB).then(() => console.log('Db connection successful'));
 
 // START THE SERVER
+// this "process.env.PORT" is mandatory for HEROKU
 const port = process.env.PORT || 3000;
 // server is saved to be used in closing the server gracefully
 const server = app.listen(port, () => {
