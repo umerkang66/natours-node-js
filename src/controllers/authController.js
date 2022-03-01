@@ -29,7 +29,7 @@ const signToken = userId => {
 };
 
 // We also need to send statusCode with it, because different token creating operations can have different statusCode
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   // Attach the cookie to the cookie (a cookie is a piece of text, that server send to the browser, then browser automatically attach this cookie to every request that browser made to that certain server)
@@ -41,13 +41,14 @@ const createSendToken = (user, statusCode, res) => {
     ),
     // By using this cookie cannot be modified by any way by browser
     httpOnly: true,
-  };
 
-  if (process.env.NODE_ENV === 'production') {
     // By using this cookie will be only sent if we are using https
     // This one should only be done in production
-    cookieOptions.secure = true;
-  }
+
+    // "req.secure" is from "express", this will be true, if we are on "https"
+    // In heroku req.secure (might not be true, if this "x-forwarded-proto" === 'https', then we are good to go)
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+  };
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -80,7 +81,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   await new Email(newUser, url).sendWelcome();
 
   // "201" means created
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -110,7 +111,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 3) If everything ok, send token to the client
   // "200" means "ok"
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 // Logging out the user
@@ -342,7 +343,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) IMP! Update the changedPasswordAt property for the current user, This is automatically changed from the userModel pre save hook
 
   // 4) Log the user in, send the jwt to the client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 // This will work if the logged in user want to update his password,
@@ -372,5 +373,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // 6) Send the success message, and again signIn the user (send the token)
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });

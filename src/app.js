@@ -27,6 +27,9 @@ const globalErrorHandler = require('./controllers/errorController');
 // Creating the application
 const app = express();
 
+// Trust proxies Heroku configuration
+app.enable('trust proxy');
+
 // ADDING CORS
 app.use(cors());
 
