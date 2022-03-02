@@ -31,7 +31,19 @@ const app = express();
 app.enable('trust proxy');
 
 // ADDING CORS
+// Request from different domain, different subdomain, different protocol, or even a different port is considered "cross origin request"
+// "cors" stands for "cross origin resource sharing"
+
+// If we only want to allow some specific websites
+// app.use(cors({ origin: 'https://www.natours.com' }));
+// "header" Access-Control-Allow-Origin ==> *
+
+// Right now this will only work for simple request (get and post)
 app.use(cors());
+
+// For the non-simple request (put, patch, delete, and the requests that send cookies, or use nonstandard headers), before the actual request comes in the browser will send a "options" request (in order to figure out if the actual request is safe to send), and we need to respond to that options request
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors());
 
 // WIRING UP THE TEMPLATE ENGINE
 // Which template engine to use. express supports the "pug" out of the box, we just have tell the express, and not need to install the pug package
