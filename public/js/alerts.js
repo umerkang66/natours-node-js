@@ -6,12 +6,12 @@ export const hideAlert = () => {
 };
 
 // type os "success" or "error"
-export const showAlert = (type, msg) => {
+export const showAlert = (type, msg, timeToShow = 5) => {
   // If we want to show the alert, first hide the previous alerts
   hideAlert();
 
   const markup = `<div class="alert alert--${type}">${msg}</div>`;
   document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
 
-  window.setTimeout(hideAlert, 5000);
+  window.setTimeout(hideAlert, timeToShow * 1000);
 };

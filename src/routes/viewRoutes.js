@@ -6,6 +6,9 @@ const authController = require('../controllers/authController');
 
 const router = Router();
 
+// Extract the alerts from urls, and put in the res.locals (res.locals) can be accessed in templates: Currently url with alert query is sent from stripe success_url
+router.use(viewController.alerts);
+
 // Check if the user is logged in, if it is set the currentUser to local (which can accessed in templates)
 // "authController.isLoggedIn"
 

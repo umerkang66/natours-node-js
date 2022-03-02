@@ -7,6 +7,21 @@ const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+// MIDDLEWARE
+
+// Extract the alerts from urls, and put in the res.locals (res.locals) can be accessed in templates: Currently url with alert query is sent from stripe success_url
+exports.alerts = (req, res, next) => {
+  const { alert } = req.query;
+
+  if (alert === 'booking') {
+    res.locals.alert =
+      "You booking was successful. Please check your email for confirmation. If your booking doesn't show up immediately, please come back later";
+  }
+
+  next();
+};
+
+// HANDLERS
 exports.getOverview = catchAsync(async (req, res, next) => {
   // 1) Get all Tour data from the collection
   const tours = await Tour.find();
