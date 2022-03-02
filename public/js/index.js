@@ -113,5 +113,5 @@ if (logoutBtn) {
 }
 
 if (bodyForAlert && bodyForAlert.dataset.alert) {
-  showAlert('success', alert, 20);
+  showAlert('success', bodyForAlert.dataset.alert, 20);
 }
