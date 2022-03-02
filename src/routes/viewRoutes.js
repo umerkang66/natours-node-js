@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const viewController = require('../controllers/viewController');
 const authController = require('../controllers/authController');
-// ONLY TEMPORARY
-const bookingController = require('../controllers/bookingController');
+// WE DON'T NEED THIS IN PRODUCTION
+// const bookingController = require('../controllers/bookingController');
 
 const router = Router();
 
@@ -15,7 +15,8 @@ const router = Router();
 // This page also hits, when stripe payment is successful
 router.get(
   '/',
-  bookingController.createBookingCheckout,
+  // WE DON'T NEED THIS IN PRODUCTION
+  // bookingController.createBookingCheckout,
   authController.isLoggedIn,
   viewController.getOverview
 );

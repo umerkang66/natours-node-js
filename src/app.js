@@ -23,6 +23,7 @@ const bookingRouter = require('./routes/bookingRoutes');
 
 // Importing the Controllers
 const globalErrorHandler = require('./controllers/errorController');
+const bookingController = require('./controllers/bookingController');
 
 // Creating the application
 const app = express();
@@ -53,6 +54,14 @@ const viewsPath = path.join(rootDir, 'src', 'views');
 app.set('views', viewsPath);
 
 // MIDDLEWARES: These are the functions that can modify the request objects. Middlewares that exists firsts in the code, will be executed first
+
+// STRIPE WEBHOOK: This will run after payment is successful
+// This one has to run before our body parser, (because stripe needs body in raw form: in "streams"),  and express.raw() will exactly do that
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 
 // Serving static files
 const staticFilesPath = path.join(rootDir, 'public');
@@ -92,7 +101,7 @@ app.use(
   })
 );
 
-// It will compresses all the responses (only text, and json)
+// It will compresses all the responses (only text, and json), "gzip"
 app.use(compression());
 
 if (process.env.NODE_ENV === 'development') {
