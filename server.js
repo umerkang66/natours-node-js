@@ -61,3 +61,14 @@ process.on('unhandledRejection', reason => {
     // After crashing in production, there should be a some tool in place to restart the application
   });
 });
+
+// Heroku send SIGTERM in every 24 hours, to keep our application in healthy state
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED 💥💥💥. Shutting down gracefully');
+
+  // Explanation in unhandled rejection
+  server.close(() => {
+    console.log('💥 Process terminated');
+    // We will not use "process.exit()" because "sigterm" will automatically terminate the application
+  });
+});
