@@ -91,7 +91,7 @@ const createBookingOnCheckout = async session => {
 };
 
 // This will run in app.js (only for deployed website), it will be called from stripe webhook (POST request)
-exports.webhookCheckout = async (req, res, next) => {
+exports.webhookCheckout = (req, res, next) => {
   // Set by stripe
   const signature = req.headers['stripe-signature'];
 
@@ -112,7 +112,7 @@ exports.webhookCheckout = async (req, res, next) => {
 
   if (event.type === 'checkout.session.completed') {
     // "event.data.object" is actually session that we have create in "getCheckoutSession" middleware
-    await createBookingOnCheckout(event.data.object);
+    createBookingOnCheckout(event.data.object);
   }
 
   // Send the response to stripe
