@@ -27,6 +27,7 @@ exports.sameUser = catchAsync(async (req, res, next) => {
   const userRole = req.user.role;
   const reviewId = req.params.id;
 
+  // User is automatically populated in the review find query
   const actualReview = await Review.findById(reviewId);
   // typeof actualReview.user.id === string
   // typeof actualReview.user._id === object
