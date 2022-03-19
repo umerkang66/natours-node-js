@@ -98,6 +98,7 @@ userSchema.pre('save', function (next) {
 
   // IMPORTANT PROBLEM! Sometimes saving it to the DB is slow than issuing jwt to the client, so passwordChangedAt will become after the jwt is created and sent, then user will not be able to get access to the protected route, using the token (he has to log in again), so subtract it with 1 seconds
   this.passwordChangedAt = Date.now() - 1000;
+  // Currently password Changed at is now number, but when it is saved to DB, it is converted to instance of Date() class, and Date() has getTime() method on it, that we call in the "passwordChangedAfter" instance method
 
   // Make sure to call next
   next();
@@ -129,6 +130,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   // If this property doesn't exist it means that the user have never changed its password, (it will be undefined or null)
   if (this.passwordChangedAt) {
     // Convert the passwordChangedAt to milliseconds, and JWTTimestamp is in seconds, so convert the changedTimestamp to seconds also by dividing it by 1000
+    // parseInt will convert the Date.now() time string to number
     const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
