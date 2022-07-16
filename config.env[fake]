@@ -1,0 +1,15 @@
+PORT=3000
+DATABASE=<mongodb_url>
+DATABASE_PASSWORD=<mongodb_password>
+JWT_SECRET=<jwt_secret>
+JWT_EXPIRES_IN=30d
+JWT_COOKIE_EXPIRES_IN=30
+STRIPE_SECRET_KEY=<stripe_secret_key>
+STRIPE_WEBHOOK_SECRET=<stripe_webhook_key>
+EMAIL_FROM=ugulzar4512@gmail.com
+EMAIL_HOST=<mailtrap_email_host>
+EMAIL_PASSWORD=<mailtrap_email_password>
+EMAIL_PORT=<mailtrap_email_port>
+EMAIL_USERNAME=<mailtrap_username>
+SEND_IN_BLUE_PASSWORD=<send_in_blue_password>
+SEND_IN_BLUE_USERNAME=<send_in_blue_username>
