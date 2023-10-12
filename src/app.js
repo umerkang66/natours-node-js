@@ -101,9 +101,6 @@ app.use(
   })
 );
 
-
-
-
 // It will compresses all the responses (only text, and json), "gzip"
 app.use(compression());
 
