@@ -1,6 +1,6 @@
 /* eslint-disable */
 import '@babel/polyfill';
-import { login, logout } from './login';
+import { login, logout, signup } from './login';
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
@@ -8,6 +8,7 @@ import { showAlert } from './alerts';
 
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
+const signupForm = document.querySelector('.form--signup');
 const updateSettingsForm = document.querySelector('.form-user-data');
 const updatePasswordForm = document.querySelector('.form-user-password');
 const mapContainer = document.getElementById('map');
@@ -37,6 +38,26 @@ if (loginForm) {
     await login(email, password);
 
     buttonEl.textContent = 'Login';
+    buttonEl.style.opacity = 1;
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordconfirm').value;
+    const buttonEl = document.querySelector('.btn--login');
+
+    buttonEl.textContent = 'Processing...';
+    buttonEl.style.opacity = 0.7;
+
+    await signup(name, email, password, passwordConfirm);
+
+    buttonEl.textContent = 'Signup';
     buttonEl.style.opacity = 1;
   });
 }

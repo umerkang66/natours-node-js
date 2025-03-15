@@ -30,6 +30,7 @@ const app = express();
 
 // Trust proxies Heroku configuration
 app.enable('trust proxy');
+app.set('trust proxy', '127.0.0.1');
 
 // ADDING CORS
 // Request from different domain, different subdomain, different protocol, or even a different port is considered "cross origin request"

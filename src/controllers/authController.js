@@ -66,6 +66,8 @@ const createSendToken = (user, statusCode, req, res) => {
 // We are not calling is createUser but signup, because that one has appropriate meaning in the context of authentication
 exports.signup = catchAsync(async (req, res, next) => {
   // Get user properties from req.body
+  console.log('umer did this');
+
   const { name, email, password, passwordConfirm } = req.body;
 
   // Create new user
