@@ -124,3 +124,5 @@ exports.getBooking = factory.getOne(Booking);
 exports.getAllBookings = factory.getAll(Booking);
 exports.updateBooking = factory.updateOne(Booking);
 exports.deleteBooking = factory.deleteOne(Booking);
+
+// stripe listen --forward-to http://localhost:3000/webhook-checkout --events checkout.session.completed
