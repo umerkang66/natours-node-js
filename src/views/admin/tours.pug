@@ -73,7 +73,7 @@ block content
         .admin-modal__header
           h3.admin-modal__title#tourModalTitle Add New Tour
           button.admin-modal__close#closeTourModal
-            svg
+            svg.admin-modal__close-icon
               use(xlink:href='/img/icons.svg#icon-x')
         
         .admin-modal__body
@@ -136,7 +136,7 @@ block content
         .admin-modal__header
           h3.admin-modal__title Confirm Delete
           button.admin-modal__close#closeDeleteModal
-            svg
+            svg.admin-modal__close-icon
               use(xlink:href='/img/icons.svg#icon-x')
         
         .admin-modal__body
@@ -149,7 +149,7 @@ block content
     // Loading Overlay
     .admin-loading#adminLoading
       .admin-loading__spinner
-        svg
+        svg.admin-loading__spinner-icon
           use(xlink:href='/img/icons.svg#icon-loader')
 
 block scripts

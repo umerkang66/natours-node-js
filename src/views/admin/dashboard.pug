@@ -63,7 +63,7 @@ block content
         .admin-stats
           .admin-stat-card
             .admin-stat-card__icon.admin-stat-card__icon--tours
-              svg
+              svg.admin-stat-card__svg
                 use(xlink:href='/img/icons.svg#icon-map')
             .admin-stat-card__content
               h3.admin-stat-card__number#totalTours 0
@@ -73,7 +73,7 @@ block content
               
           .admin-stat-card
             .admin-stat-card__icon.admin-stat-card__icon--users
-              svg
+              svg.admin-stat-card__svg
                 use(xlink:href='/img/icons.svg#icon-user')
             .admin-stat-card__content
               h3.admin-stat-card__number#totalUsers 0
@@ -83,7 +83,7 @@ block content
               
           .admin-stat-card
             .admin-stat-card__icon.admin-stat-card__icon--bookings
-              svg
+              svg.admin-stat-card__svg
                 use(xlink:href='/img/icons.svg#icon-credit-card')
             .admin-stat-card__content
               h3.admin-stat-card__number#totalBookings 0
@@ -93,7 +93,7 @@ block content
               
           .admin-stat-card
             .admin-stat-card__icon.admin-stat-card__icon--revenue
-              svg
+              svg.admin-stat-card__svg
                 use(xlink:href='/img/icons.svg#icon-trending-up')
             .admin-stat-card__content
               h3.admin-stat-card__number#totalRevenue $0
@@ -141,7 +141,7 @@ block content
     // Loading Overlay
     .admin-loading#adminLoading
       .admin-loading__spinner
-        svg
+        svg.admin-loading__spinner-icon
           use(xlink:href='/img/icons.svg#icon-loader')
 
 block scripts

@@ -73,7 +73,7 @@ block content
         .admin-modal__header
           h3.admin-modal__title#userModalTitle Add New User
           button.admin-modal__close#closeUserModal
-            svg
+            svg.admin-modal__close-icon
               use(xlink:href='/img/icons.svg#icon-x')
         
         .admin-modal__body
@@ -116,7 +116,7 @@ block content
         .admin-modal__header
           h3.admin-modal__title Confirm Delete
           button.admin-modal__close#closeDeleteUserModal
-            svg
+            svg.admin-modal__close-icon
               use(xlink:href='/img/icons.svg#icon-x')
         
         .admin-modal__body
@@ -129,7 +129,7 @@ block content
     // Loading Overlay
     .admin-loading#adminLoading
       .admin-loading__spinner
-        svg
+        svg.admin-loading__spinner-icon
           use(xlink:href='/img/icons.svg#icon-loader')
 
 block scripts
