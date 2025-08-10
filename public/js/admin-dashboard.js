@@ -9,7 +9,9 @@ class AdminDashboard {
 
   async init() {
     try {
-      await this.checkAuth();
+      // Since we're already authenticated via cookies in the view routes,
+      // we don't need to check authentication here
+      this.currentUser = window.currentUser || null;
       await this.loadDashboardData();
       this.setupEventListeners();
       this.setupCharts();
@@ -18,36 +20,6 @@ class AdminDashboard {
       console.error('Dashboard initialization failed:', error);
       this.showMessage('Failed to initialize dashboard', 'error');
     }
-  }
-
-  async checkAuth() {
-    try {
-      const response = await fetch('/api/v1/users/me', {
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Authentication failed');
-      }
-
-      const user = await response.json();
-      if (user.data.user.role !== 'admin') {
-        window.location.href = '/';
-        return;
-      }
-
-      this.currentUser = user.data.user;
-      this.updateUserInfo();
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      window.location.href = '/login';
-    }
-  }
-
-  getToken() {
-    return localStorage.getItem('jwt') || sessionStorage.getItem('jwt');
   }
 
   updateUserInfo() {
@@ -69,10 +41,9 @@ class AdminDashboard {
     try {
       this.showLoading(true);
       
-      // Load stats
+      // Since we're already authenticated, we can make requests without headers
+      // The server will handle authentication via cookies
       await this.loadStats();
-      
-      // Load recent data
       await this.loadRecentData();
       
       this.showLoading(false);
@@ -85,12 +56,17 @@ class AdminDashboard {
 
   async loadStats() {
     try {
+      // Make requests without Authorization headers - cookies will handle auth
       const [toursResponse, usersResponse, bookingsResponse, reviewsResponse] = await Promise.all([
-        fetch('/api/v1/tours', { headers: { 'Authorization': `Bearer ${this.getToken()}` } }),
-        fetch('/api/v1/users', { headers: { 'Authorization': `Bearer ${this.getToken()}` } }),
-        fetch('/api/v1/bookings', { headers: { 'Authorization': `Bearer ${this.getToken()}` } }),
-        fetch('/api/v1/reviews', { headers: { 'Authorization': `Bearer ${this.getToken()}` } })
+        fetch('/api/v1/tours'),
+        fetch('/api/v1/users'),
+        fetch('/api/v1/bookings'),
+        fetch('/api/v1/reviews')
       ]);
+
+      if (!toursResponse.ok || !usersResponse.ok || !bookingsResponse.ok || !reviewsResponse.ok) {
+        throw new Error('Failed to fetch stats');
+      }
 
       const tours = await toursResponse.json();
       const users = await usersResponse.json();
@@ -112,11 +88,16 @@ class AdminDashboard {
 
   async loadRecentData() {
     try {
+      // Make requests without Authorization headers - cookies will handle auth
       const [recentTours, recentBookings, recentReviews] = await Promise.all([
-        fetch('/api/v1/tours?limit=5&sort=-createdAt', { headers: { 'Authorization': `Bearer ${this.getToken()}` } }),
-        fetch('/api/v1/bookings?limit=5&sort=-createdAt', { headers: { 'Authorization': `Bearer ${this.getToken()}` } }),
-        fetch('/api/v1/reviews?limit=5&sort=-createdAt', { headers: { 'Authorization': `Bearer ${this.getToken()}` } })
+        fetch('/api/v1/tours?limit=5&sort=-createdAt'),
+        fetch('/api/v1/bookings?limit=5&sort=-createdAt'),
+        fetch('/api/v1/reviews?limit=5&sort=-createdAt')
       ]);
+
+      if (!recentTours.ok || !recentBookings.ok || !recentReviews.ok) {
+        throw new Error('Failed to fetch recent data');
+      }
 
       const tours = await recentTours.json();
       const bookings = await recentBookings.json();
@@ -462,14 +443,19 @@ class AdminDashboard {
 
   async logout() {
     try {
-      // Clear local storage
-      localStorage.removeItem('jwt');
-      sessionStorage.removeItem('jwt');
+      // Use the server-side logout endpoint which will clear cookies
+      const response = await fetch('/api/v1/users/logout', { method: 'GET' });
       
-      // Redirect to login
-      window.location.href = '/login';
+      if (response.ok) {
+        // Redirect to login after successful logout
+        window.location.href = '/login';
+      } else {
+        // If logout fails, still redirect to login
+        window.location.href = '/login';
+      }
     } catch (error) {
       console.error('Logout failed:', error);
+      // Even if there's an error, redirect to login
       window.location.href = '/login';
     }
   }

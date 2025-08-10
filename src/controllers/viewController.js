@@ -164,3 +164,30 @@ exports.getAdminReviews = catchAsync(async (req, res, next) => {
     reviews
   });
 });
+
+exports.getAdminNewTour = (req, res) => {
+  res.status(200).render('admin/tour-form', {
+    title: 'Create New Tour',
+    tour: null
+  });
+};
+
+exports.getAdminEditTour = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findById(req.params.id);
+  
+  if (!tour) {
+    return next(new AppError('Tour not found', 404));
+  }
+
+  res.status(200).render('admin/tour-form', {
+    title: 'Edit Tour',
+    tour
+  });
+});
+
+exports.getAdminNewUser = (req, res) => {
+  res.status(200).render('admin/user-form', {
+    title: 'Create New User',
+    user: null
+  });
+};

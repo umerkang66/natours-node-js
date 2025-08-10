@@ -16,7 +16,8 @@ class AdminTours {
 
   async init() {
     try {
-      await this.checkAuth();
+      // Since we're already authenticated via cookies in the view routes,
+      // we don't need to check authentication here
       await this.loadTours();
       this.setupEventListeners();
       this.setupFilters();
@@ -24,33 +25,6 @@ class AdminTours {
       console.error('Tours management initialization failed:', error);
       this.showMessage('Failed to initialize tours management', 'error');
     }
-  }
-
-  async checkAuth() {
-    try {
-      const response = await fetch('/api/v1/users/me', {
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Authentication failed');
-      }
-
-      const user = await response.json();
-      if (user.data.user.role !== 'admin') {
-        window.location.href = '/';
-        return;
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      window.location.href = '/login';
-    }
-  }
-
-  getToken() {
-    return localStorage.getItem('jwt') || sessionStorage.getItem('jwt');
   }
 
   async loadTours() {
@@ -63,11 +37,8 @@ class AdminTours {
         ...this.filters
       });
 
-      const response = await fetch(`/api/v1/tours?${queryParams}`, {
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`
-        }
-      });
+      // Make request without Authorization header - cookies will handle auth
+      const response = await fetch(`/api/v1/tours?${queryParams}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch tours');
@@ -423,11 +394,8 @@ class AdminTours {
 
   async loadTourData(tourId) {
     try {
-      const response = await fetch(`/api/v1/tours/${tourId}`, {
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`
-        }
-      });
+      // Make request without Authorization header - cookies will handle auth
+      const response = await fetch(`/api/v1/tours/${tourId}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch tour data');
@@ -499,7 +467,6 @@ class AdminTours {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.getToken()}`
         },
         body: JSON.stringify(tourData)
       });
@@ -536,11 +503,9 @@ class AdminTours {
     try {
       this.showLoading(true);
       
+      // Make request without Authorization header - cookies will handle auth
       const response = await fetch(`/api/v1/tours/${tourId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`
-        }
+        method: 'DELETE'
       });
 
       if (!response.ok) {
@@ -581,11 +546,9 @@ class AdminTours {
       this.showLoading(true);
       
       const promises = tourIds.map(id => 
+        // Make request without Authorization header - cookies will handle auth
         fetch(`/api/v1/tours/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${this.getToken()}`
-          }
+          method: 'DELETE'
         })
       );
 
@@ -607,11 +570,11 @@ class AdminTours {
       this.showLoading(true);
       
       const promises = tourIds.map(id => 
+        // Make request without Authorization header - cookies will handle auth
         fetch(`/api/v1/tours/${id}`, {
           method: 'PATCH',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.getToken()}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ active: true })
         })
@@ -635,11 +598,11 @@ class AdminTours {
       this.showLoading(true);
       
       const promises = tourIds.map(id => 
+        // Make request without Authorization header - cookies will handle auth
         fetch(`/api/v1/tours/${id}`, {
           method: 'PATCH',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.getToken()}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ active: false })
         })

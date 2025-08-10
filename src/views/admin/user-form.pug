@@ -1,0 +1,112 @@
+extends ../../base
+
+block head
+  title #{title} | Natours Admin
+  link(rel='stylesheet' href='/css/admin.css')
+
+block content
+  .admin-container
+    // Admin Sidebar
+    aside.admin-sidebar
+      .admin-sidebar__header
+        .admin-sidebar__logo
+          img(src='/img/logo-green.png' alt='Natours Admin')
+        h2.admin-sidebar__title Admin Panel
+        
+      nav.admin-sidebar__nav
+        ul.admin-sidebar__menu
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/dashboard' data-section='dashboard')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-map')
+              span Dashboard
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/tours' data-section='tours')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-map')
+              span Tours
+          li.admin-sidebar__item
+            a.admin-sidebar__link.admin-sidebar__link--active(href='/admin/users' data-section='users')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-user')
+              span Users
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/bookings' data-section='bookings')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-credit-card')
+              span Bookings
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/reviews' data-section='reviews')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-star')
+              span Reviews
+
+    // Main Content Area
+    main.admin-main
+      // Top Header
+      header.admin-header
+        .admin-header__left
+          h1.admin-header__title #{title}
+          p.admin-sidebar__subtitle Create a new user account
+        .admin-header__right
+          .admin-header__user
+            img.admin-header__user-img(src=`/img/users/${user.photo}` alt=`${user.name}`)
+            span.admin-header__user-name= user.name
+          .admin-header__actions
+            a.btn.btn--white.btn--small(href='/admin/users') Back to Users
+            a.btn.btn--green.btn--small(href='/') View Site
+
+      // User Form Content
+      .admin-content
+        .admin-form-container
+          form.admin-form#userForm
+            .admin-form__row
+              .admin-form__group
+                label.admin-form__label(for='name') Full Name
+                input.admin-form__input#name(type='text' name='name' required)
+              
+              .admin-form__group
+                label.admin-form__label(for='email') Email Address
+                input.admin-form__input#email(type='email' name='email' required)
+            
+            .admin-form__row
+              .admin-form__group
+                label.admin-form__label(for='password') Password
+                input.admin-form__input#password(type='password' name='password' required)
+              
+              .admin-form__group
+                label.admin-form__label(for='passwordConfirm') Confirm Password
+                input.admin-form__input#passwordConfirm(type='password' name='passwordConfirm' required)
+            
+            .admin-form__row
+              .admin-form__group
+                label.admin-form__label(for='role') Role
+                select.admin-form__input#role(name='role' required)
+                  option(value='') Select Role
+                  option(value='user') User
+                  option(value='guide') Guide
+                  option(value='lead-guide') Lead Guide
+                  option(value='admin') Admin
+              
+              .admin-form__group
+                label.admin-form__label(for='photo') Photo URL
+                input.admin-form__input#photo(type='url' name='photo' placeholder='https://example.com/photo.jpg')
+            
+            .admin-form__group
+              label.admin-form__label(for='active') Account Status
+              select.admin-form__input#active(name='active')
+                option(value='true') Active
+                option(value='false') Inactive
+            
+            .admin-form__actions
+              button.btn.btn--green.btn--small(type='submit') Create User
+              a.btn.btn--white.btn--small(href='/admin/users') Cancel
+
+    // Loading Overlay
+    .admin-loading#adminLoading
+      .admin-loading__spinner
+        svg
+          use(xlink:href='/img/icons.svg#icon-loader')
+
+block scripts
+  script(src='/js/admin-users.js')

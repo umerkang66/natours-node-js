@@ -45,7 +45,10 @@ router.post(
 // Admin routes - only accessible to admin users
 router.get('/admin/dashboard', authController.protect, authController.restrictTo('admin'), viewController.getAdminDashboard);
 router.get('/admin/tours', authController.protect, authController.restrictTo('admin'), viewController.getAdminTours);
+router.get('/admin/tours/new', authController.protect, authController.restrictTo('admin'), viewController.getAdminNewTour);
+router.get('/admin/tours/:id', authController.protect, authController.restrictTo('admin'), viewController.getAdminEditTour);
 router.get('/admin/users', authController.protect, authController.restrictTo('admin'), viewController.getAdminUsers);
+router.get('/admin/users/new', authController.protect, authController.restrictTo('admin'), viewController.getAdminNewUser);
 router.get('/admin/bookings', authController.protect, authController.restrictTo('admin'), viewController.getAdminBookings);
 router.get('/admin/reviews', authController.protect, authController.restrictTo('admin'), viewController.getAdminReviews);
 
