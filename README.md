@@ -95,5 +95,24 @@ Make sure your config.env DATABASE and DATABASE_PASSWORD are valid before runnin
 - Views: /
 - API: /api/v1/tours, /api/v1/users, /api/v1/reviews, /api/v1/bookings
 
+## Screenshots
+Below are some snapshots of the Natours application UI and features:
+
+- Overview page
+  
+  ![Screenshot 1](./public/img/screenshots/1.png)
+
+- Tour details page
+  
+  ![Screenshot 2](./public/img/screenshots/2.png)
+
+- Authentication / Account pages
+  
+  ![Screenshot 3](./public/img/screenshots/3.png)
+
+- Booking / Payments flow (test environment)
+  
+  ![Screenshot 4](./public/img/screenshots/4.png)
+
 ## Credits
 This project was built while following Jonas Schmedtmann's Node.js course on Udemy.
