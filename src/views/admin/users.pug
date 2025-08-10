@@ -29,7 +29,7 @@ block content
         // Search and Filters
         .admin-filters
           .admin-search
-            input.admin-search__input#userSearch(type='text' placeholder='Search users...')
+            input.admin-search__input#searchInput(type='text' placeholder='Search users...')
             svg.admin-search__icon
               use(xlink:href='/img/icons.svg#icon-search')
           
@@ -41,10 +41,10 @@ block content
               option(value='lead-guide') Lead Guide
               option(value='admin') Admin
             
-            select.admin-filter#statusFilter
+            select.admin-filter#activeFilter
               option(value='') All Status
-              option(value='active') Active
-              option(value='inactive') Inactive
+              option(value='true') Active
+              option(value='false') Inactive
 
         // Users Table
         .admin-table-container
