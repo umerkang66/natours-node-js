@@ -50,7 +50,7 @@ block content
           p.admin-sidebar__subtitle Create a new user account
         .admin-header__right
           .admin-header__user
-            img.admin-header__user-img(src=`/img/users/${user.photo}` alt=`${user.name}`)
+            img.admin-header__user-img(src=`/img/users/${user.photo || 'default.jpeg'}` alt=`${user.name}`)
             span.admin-header__user-name= user.name
           .admin-header__actions
             a.btn.btn--white.btn--small(href='/admin/users') Back to Users
