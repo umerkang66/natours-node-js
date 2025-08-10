@@ -17,82 +17,102 @@ mixin overviewBox(label, text, icon)
     span.overview-box__text= text
 
 block content
-  section.section-header
-    .header__hero
-      .header__hero-overlay &nbsp;
-      img.header__hero-img(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+  // Hero Section - Modern and Engaging
+  section.tour-hero
+    .tour-hero__background
+      img.tour-hero__image(src=`/img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+      .tour-hero__overlay
+    .tour-hero__content
+      .container
+        .tour-hero__info
+          h1.tour-hero__title= tour.name
+          p.tour-hero__subtitle= tour.summary
+          .tour-hero__stats
+            .tour-hero__stat
+              svg.tour-hero__icon
+                use(xlink:href='/img/icons.svg#icon-clock')
+              span= `${tour.duration} days`
+            .tour-hero__stat
+              svg.tour-hero__icon
+                use(xlink:href='/img/icons.svg#icon-map-pin')
+              span= tour.startLocation.description
+            .tour-hero__stat
+              svg.tour-hero__icon
+                use(xlink:href='/img/icons.svg#icon-star')
+              span= `${tour.ratingsAverage} / 5`
 
-    .heading-box
-      h1.heading-primary
-        span= `${tour.name} tour`
-      .heading-box__group
-        .heading-box__detail
-          svg.heading-box__icon
-            use(xlink:href='/img/icons.svg#icon-clock')
-          span.heading-box__text= `${tour.duration} days`
-        .heading-box__detail
-          svg.heading-box__icon
-            use(xlink:href='/img/icons.svg#icon-map-pin')
-          span.heading-box__text= tour.startLocation.description
-
-  section.section-description
-    .overview-box
-      div
-        .overview-box__group
-          h2.heading-secondary.ma-bt-lg Quick facts
-
-          - const date = tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
-          +overviewBox('Next date', date, 'calendar')
-          +overviewBox('Difficulty', tour.difficulty, 'trending-up')
-          +overviewBox('Participants', `${tour.maxGroupSize} people`, 'user')
-          +overviewBox('Rating', `${tour.ratingsAverage} / 5`, 'star')
-
-        .overview-box__group
-          h2.heading-secondary.ma-bt-lg Your tour guides
-
-          each guide in tour.guides
-            .overview-box__detail
-              img.overview-box__img(src=`/img/users/${guide.photo}`, alt=`${guide.name}`)
-
-              - if (guide.role === 'lead-guide')
-                span.overview-box__label Lead guide
-              - if (guide.role === 'guide')
-                span.overview-box__label Tour guide
-              span.overview-box__text= guide.name
-
-    .description-box
-      h2.heading-secondary.ma-bt-lg= `About ${tour.name} tour`
-      - const parapraphs = tour.description.split('\n');
-      each p in parapraphs
-        p.description__text= p
-
-  section.section-pictures
-    each img, i in tour.images
-      .picture-box
-        img.picture-box__img(src=`/img/tours/${img}`, alt=`The Park Camper Tour ${i + 1}`, class=`picture-box__img--${i + 1}`)
-
-  section.section-map
-    //- This is a nice trick to specify data property in the html, that we can read from the js file (by querySelector)
-    #map(data-locations=`${JSON.stringify(tour.locations)}`)
-    //- This map "id" is required by mapbox library
-
-  section.section-reviews
-    .reviews
-      each review in tour.reviews
-        +reviewCard(review)
-
-  section.section-cta
-    .cta
-      .cta__img.cta__img--logo
-        img(src='/img/logo-white.png', alt='Natours logo')
-      img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Tour picture')
-      img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='Tour picture')
-      .cta__content
-        h2.heading-secondary What are you waiting for?
-        p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+  // Quick Facts Section - Enhanced Layout
+  section.tour-facts
+    .container
+      .tour-facts__grid
+        .tour-facts__card
+          h3.tour-facts__title Quick Facts
+          .tour-facts__list
+            - const date = tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
+            +overviewBox('Next date', date, 'calendar')
+            +overviewBox('Difficulty', tour.difficulty, 'trending-up')
+            +overviewBox('Participants', `${tour.maxGroupSize} people`, 'user')
+            +overviewBox('Rating', `${tour.ratingsAverage} / 5`, 'star')
         
-        if user
-          //- data-tour-id becomes dataset.tourId in js
-          button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
-        else
-          a.btn.btn--green.span-all-rows(href='/login') Log in to book tour
+        .tour-facts__card
+          h3.tour-facts__title Your Tour Guides
+          .tour-facts__guides
+            each guide in tour.guides
+              .tour-facts__guide
+                img.tour-facts__guide-img(src=`/img/users/${guide.photo}`, alt=`${guide.name}`)
+                .tour-facts__guide-info
+                  - if (guide.role === 'lead-guide')
+                    span.tour-facts__guide-role Lead guide
+                  - if (guide.role === 'guide')
+                    span.tour-facts__guide-role Tour guide
+                  span.tour-facts__guide-name= guide.name
+
+  // Description Section - Enhanced Typography
+  section.tour-description
+    .container
+      .tour-description__content
+        h2.tour-description__title= `About ${tour.name} tour`
+        .tour-description__text
+          - const parapraphs = tour.description.split('\n');
+          each p in parapraphs
+            p= p
+
+  // Gallery Section - Modern Grid Layout
+  section.tour-gallery
+    .container
+      h2.tour-gallery__title Tour Gallery
+      .tour-gallery__grid
+        each img, i in tour.images
+          .tour-gallery__item
+            img.tour-gallery__image(src=`/img/tours/${img}`, alt=`${tour.name} ${i + 1}`)
+
+  // Map Section - Enhanced Container
+  section.tour-map
+    .container
+      h2.tour-map__title Tour Locations
+      .tour-map__container
+        #map(data-locations=`${JSON.stringify(tour.locations)}`)
+
+  // Reviews Section - Modern Card Layout
+  section.tour-reviews
+    .container
+      h2.tour-reviews__title What Our Travelers Say
+      .tour-reviews__grid
+        each review in tour.reviews
+          +reviewCard(review)
+
+  // Booking CTA Section - Enhanced Design
+  section.tour-booking
+    .container
+      .tour-booking__content
+        .tour-booking__info
+          h2.tour-booking__title What are you waiting for?
+          p.tour-booking__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+          .tour-booking__price
+            span.tour-booking__amount= `$${tour.price}`
+            span.tour-booking__per-person per person
+        .tour-booking__action
+          if user
+            button.btn.btn--green.tour-booking__btn#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+          else
+            a.btn.btn--green.tour-booking__btn(href='/login') Log in to book tour

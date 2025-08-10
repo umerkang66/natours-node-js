@@ -1,0 +1,43 @@
+aside.admin-sidebar
+  .admin-sidebar__header
+    .admin-sidebar__logo
+      img(src='/img/logo-green.png' alt='Natours Admin')
+    h2.admin-sidebar__title Admin Panel
+    
+  nav.admin-sidebar__nav
+    ul.admin-sidebar__menu
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/dashboard' data-section='dashboard')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-map')
+          span Dashboard
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/tours' data-section='tours')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-map')
+          span Tours
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/users' data-section='users')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-user')
+          span Users
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/bookings' data-section='bookings')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-credit-card')
+          span Bookings
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/reviews' data-section='reviews')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-star')
+          span Reviews
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/analytics' data-section='analytics')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-trending-up')
+          span Analytics
+      li.admin-sidebar__item
+        a.admin-sidebar__link(href='/admin/settings' data-section='settings')
+          svg.admin-sidebar__icon
+            use(xlink:href='/img/icons.svg#icon-settings')
+          span Settings

@@ -42,4 +42,11 @@ router.post(
   viewController.updateUserData
 );
 
+// Admin routes - only accessible to admin users
+router.get('/admin/dashboard', authController.protect, authController.restrictTo('admin'), viewController.getAdminDashboard);
+router.get('/admin/tours', authController.protect, authController.restrictTo('admin'), viewController.getAdminTours);
+router.get('/admin/users', authController.protect, authController.restrictTo('admin'), viewController.getAdminUsers);
+router.get('/admin/bookings', authController.protect, authController.restrictTo('admin'), viewController.getAdminBookings);
+router.get('/admin/reviews', authController.protect, authController.restrictTo('admin'), viewController.getAdminReviews);
+
 module.exports = router;

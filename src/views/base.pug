@@ -1,14 +1,18 @@
 //- This whole file we will be extending from the other pug files
 doctype html
-html
+html(lang='en')
   head
     //- We have created the block that we will be appended from other files
     block head
       meta(charset='UTF-8')
       meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      meta(name='description' content='Discover amazing tours with Natours - Your adventure starts here')
+      meta(name='theme-color' content='#667eea')
       link(rel='stylesheet' href='/css/style.css')
       link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
-      link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+      link(rel='preconnect' href='https://fonts.googleapis.com')
+      link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin)
+      link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap')
       title Natours | #{title}
       script(src="https://js.stripe.com/v3") 
 

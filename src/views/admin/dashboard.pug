@@ -1,0 +1,158 @@
+extends ../../base
+
+block head
+  title Admin Dashboard | Natours
+  link(rel='stylesheet' href='/css/admin.css')
+
+block content
+  .admin-container
+    // Admin Sidebar
+    aside.admin-sidebar
+      .admin-sidebar__header
+        .admin-sidebar__logo
+          img(src='/img/logo-green.png' alt='Natours Admin')
+        h2.admin-sidebar__title Admin Panel
+        
+      nav.admin-sidebar__nav
+        ul.admin-sidebar__menu
+          li.admin-sidebar__item
+            a.admin-sidebar__link.admin-sidebar__link--active(href='/admin/dashboard' data-section='dashboard')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-map')
+              span Dashboard
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/tours' data-section='tours')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-map')
+              span Tours
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/users' data-section='users')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-user')
+              span Users
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/bookings' data-section='bookings')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-credit-card')
+              span Bookings
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/reviews' data-section='reviews')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-star')
+              span Reviews
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/analytics' data-section='analytics')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-trending-up')
+              span Analytics
+          li.admin-sidebar__item
+            a.admin-sidebar__link(href='/admin/settings' data-section='settings')
+              svg.admin-sidebar__icon
+                use(xlink:href='/img/icons.svg#icon-settings')
+              span Settings
+
+    // Main Content Area
+    main.admin-main
+      // Top Header
+      header.admin-header
+        .admin-header__left
+          h1.admin-header__title Dashboard
+          p.admin-header__subtitle Welcome back, #{user.name}!
+        .admin-header__right
+          .admin-header__user
+            img.admin-header__user-img(src=`/img/users/${user.photo}` alt=`${user.name}`)
+            span.admin-header__user-name= user.name
+          .admin-header__actions
+            a.btn.btn--white.btn--small(href='/') View Site
+            a.btn.btn--green.btn--small(href='/logout') Logout
+
+      // Dashboard Content
+      .admin-content
+        // Stats Cards
+        .admin-stats
+          .admin-stat-card
+            .admin-stat-card__icon.admin-stat-card__icon--tours
+              svg
+                use(xlink:href='/img/icons.svg#icon-map')
+            .admin-stat-card__content
+              h3.admin-stat-card__number#totalTours 0
+              p.admin-stat-card__label Total Tours
+            .admin-stat-card__trend.admin-stat-card__trend--up
+              span +12%
+              
+          .admin-stat-card
+            .admin-stat-card__icon.admin-stat-card__icon--users
+              svg
+                use(xlink:href='/img/icons.svg#icon-user')
+            .admin-stat-card__content
+              h3.admin-stat-card__number#totalUsers 0
+              p.admin-stat-card__label Total Users
+            .admin-stat-card__trend.admin-stat-card__trend--up
+              span +8%
+              
+          .admin-stat-card
+            .admin-stat-card__icon.admin-stat-card__icon--bookings
+              svg
+                use(xlink:href='/img/icons.svg#icon-credit-card')
+            .admin-stat-card__content
+              h3.admin-stat-card__number#totalBookings 0
+              p.admin-stat-card__label Total Bookings
+            .admin-stat-card__trend.admin-stat-card__trend--up
+              span +15%
+              
+          .admin-stat-card
+            .admin-stat-card__icon.admin-stat-card__icon--revenue
+              svg
+                use(xlink:href='/img/icons.svg#icon-trending-up')
+            .admin-stat-card__content
+              h3.admin-stat-card__number#totalRevenue $0
+              p.admin-stat-card__label Total Revenue
+            .admin-stat-card__trend.admin-stat-card__trend--up
+              span +23%
+
+        // Quick Actions
+        .admin-quick-actions
+          h2.admin-section__title Quick Actions
+          .admin-quick-actions__grid
+            a.admin-quick-action(href='/admin/tours/new')
+              svg.admin-quick-action__icon
+                use(xlink:href='/img/icons.svg#icon-plus')
+              span.admin-quick-action__text Add New Tour
+            a.admin-quick-action(href='/admin/users/new')
+              svg.admin-quick-action__icon
+                use(xlink:href='/img/icons.svg#icon-user-plus')
+              span.admin-quick-action__text Add New User
+            a.admin-quick-action(href='/admin/bookings')
+              svg.admin-quick-action__icon
+                use(xlink:href='/img/icons.svg#icon-credit-card')
+              span.admin-quick-action__text Manage Bookings
+            a.admin-quick-action(href='/admin/analytics')
+              svg.admin-quick-action__icon
+                use(xlink:href='/img/icons.svg#icon-trending-up')
+              span.admin-quick-action__text View Analytics
+
+        // Recent Activity
+        .admin-recent-activity
+          h2.admin-section__title Recent Activity
+          .admin-recent-activity__list#recentActivity
+            // Activity items will be populated by JavaScript
+
+        // Charts Section
+        .admin-charts
+          .admin-chart
+            h3.admin-chart__title Tour Bookings (Last 7 Days)
+            canvas#bookingsChart(width='400' height='200')
+          
+          .admin-chart
+            h3.admin-chart__title Revenue Overview
+            canvas#revenueChart(width='400' height='200')
+
+    // Loading Overlay
+    .admin-loading#adminLoading
+      .admin-loading__spinner
+        svg
+          use(xlink:href='/img/icons.svg#icon-loader')
+
+block scripts
+  script(src='https://cdn.jsdelivr.net/npm/chart.js')
+  script(src='/js/admin-dashboard.js')

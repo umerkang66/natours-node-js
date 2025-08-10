@@ -2,6 +2,7 @@
 const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
+const Review = require('../models/reviewModel');
 
 // Importing the utils
 const catchAsync = require('../utils/catchAsync');
@@ -102,5 +103,64 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   res.status(200).render('overview', {
     title: 'My Bookings',
     tours,
+  });
+});
+
+// Admin page controllers
+exports.getAdminDashboard = catchAsync(async (req, res, next) => {
+  // Get some basic stats for the dashboard
+  const totalTours = await Tour.countDocuments();
+  const totalUsers = await User.countDocuments();
+  const totalBookings = await Booking.countDocuments();
+  
+  // Get recent tours, users, and bookings
+  const recentTours = await Tour.find().sort({ createdAt: -1 }).limit(5);
+  const recentUsers = await User.find().sort({ createdAt: -1 }).limit(5);
+  const recentBookings = await Booking.find().populate('tour user').sort({ createdAt: -1 }).limit(5);
+
+  res.status(200).render('admin/dashboard', {
+    title: 'Admin Dashboard',
+    totalTours,
+    totalUsers,
+    totalBookings,
+    recentTours,
+    recentUsers,
+    recentBookings
+  });
+});
+
+exports.getAdminTours = catchAsync(async (req, res, next) => {
+  const tours = await Tour.find().sort({ createdAt: -1 });
+
+  res.status(200).render('admin/tours', {
+    title: 'Admin Tours',
+    tours
+  });
+});
+
+exports.getAdminUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find().sort({ createdAt: -1 });
+
+  res.status(200).render('admin/users', {
+    title: 'Admin Users',
+    users
+  });
+});
+
+exports.getAdminBookings = catchAsync(async (req, res, next) => {
+  const bookings = await Booking.find().populate('tour user').sort({ createdAt: -1 });
+
+  res.status(200).render('admin/bookings', {
+    title: 'Admin Bookings',
+    bookings
+  });
+});
+
+exports.getAdminReviews = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find().populate('tour user').sort({ createdAt: -1 });
+
+  res.status(200).render('admin/reviews', {
+    title: 'Admin Reviews',
+    reviews
   });
 });
